@@ -1,0 +1,19 @@
+<? xml  version = "1.0"  encoding = "UTF-8" ?>
+<! DOCTYPE   ead  PUBLIC "+//ISBN 1-931666-00-8//DTD ead.dtd (Encoded Archival Description (EAD) Version 2002)//EN" "ead.dtd">
+< ead   audience = "external" >
+< eadheader   findaidstatus ="  unverified-partial-draft" > < eadid >OT_000049</ eadid> 
+< filedesc >
+< titlestmt >
+< titleproper >IR complet</ titleproper > < subtitle >Sous-titre</ subtitle > < author >Auteur</ author >
+</ titlestmt > < editionstmt >
+< p >Edition</ p > </ editionstmt > < publicationstmt >
+< publisher >Oriane Troubat</ publisher >
+< date   normal = "2017" >2017</ date > </ publicationstmt >
+< seriesstmt >
+< p >Collection</ p>  </ seriesstmt > < notestmt >
+< note > < p >Notes</ p >
+</ note > </ notestmt >
+</ filedesc > < profiledesc >
+< creation >
+Instrument de recherche produit au moyen du logiciel Mnesys de la société
+Naoned le</ ead >
