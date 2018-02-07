@@ -19,20 +19,9 @@ public class Send {
 
     channel.queueDeclare(queueName, false, false, false, null);
     return channel;
-    //return null;
   }
 
-  private static String getEad(String fileName)  throws Exception{
-    FileReader reader = new FileReader(fileName);
-    BufferedReader buffer= new BufferedReader(reader);
-    String line="";
-    String ret="";
-    while((line=buffer.readLine()) != null) {
-      ret=ret+line;
-    }
-    return ret;
-  }
-
+  // read a given file by using a given encoding
   private static String getXML(String fileName, String encoding) throws Exception {
     String rootedFileName=fileName;
     BufferedReader in = new BufferedReader(
@@ -48,15 +37,15 @@ public class Send {
     return ret;
   }
 
-  public static byte[] getMessageAsBytes(String fileName) throws Exception {
-    return getXML(fileName, "UTF-8").getBytes("UTF-8");
+  public static byte[] getMessageAsBytes(String fileName, String encoding) throws Exception {
+    return getXML(fileName, encoding).getBytes(encoding);
   }
-
   public static void main(String[] argv) throws Exception {
-    
-    
-    String filename="../xml/ead2002FormatError.xml";  // the file to be sent as message body
-    String rabbitIp=Constants.rabbitServer();  // the ip of the rabbit MQ server
+    String endcoding=Constants.Encoding;
+    // the file to be sent as message body
+    String filename="../xml/ead2002FormatError.xml";  
+    // the IP of the rabbit MQ server
+    String rabbitIp=Constants.rabbitServer();  
     if(argv.length>0){
       filename=argv[0];
       if(argv.length>1) {
@@ -78,23 +67,18 @@ public class Send {
     headers.put("standard","EAD");
     headers.put("version","2002");
     headers.put("vendor","scope");
-
+    
     BasicProperties properties= new BasicProperties.Builder()
     .headers(headers)
     .appId("application/xml")
-    .contentEncoding("UTF-8")
+    .contentEncoding(endcoding)
     .build();
-
-    //message=getEad("ead2002.xml");
-    //message="<? xml  version = \"1.0\"  encoding = \"UTF-8\" ?>"
-    //+"<! DOCTYPE   ead  PUBLIC \"+//ISBN 1-931666-00-8//DTD ead.dtd (Encoded Archival Description (EAD) Version 2002)//EN\" \"ead.dtd\">"
-    //+"< ead   audience = \"external\" ></ead>";
     
-    channel.basicPublish(Constants.ExchangeName, "publish",properties,getMessageAsBytes(filename));
-    System.out.println(" [x] Sent '" + getXML(filename, "UTF-8") + "'");
+    
+    channel.basicPublish(Constants.ExchangeName, "publish",properties,getMessageAsBytes(filename,endcoding));
+    System.out.println(" [x] Sent '" + getXML(filename, endcoding) + "'");
 
     channel.close();
     channel.getConnection().close();
-    //connection.close();
   }
 }
