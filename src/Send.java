@@ -11,9 +11,9 @@ import org.xml.sax.InputSource;
 
 public class Send {
 
-  private static Channel createChannel(String queueName) throws Exception {
+  private static Channel createChannel(String rabbitServerIp,String queueName) throws Exception {
     ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost(Constants.rabbitServer());
+    factory.setHost(rabbitServerIp);
     Connection connection = factory.newConnection();
     Channel channel = connection.createChannel();
 
@@ -34,7 +34,7 @@ public class Send {
   }
 
   private static String getXML(String fileName, String encoding) throws Exception {
-    String rootedFileName="../xml/"+fileName;
+    String rootedFileName=fileName;
     BufferedReader in = new BufferedReader(
       new InputStreamReader(
         new FileInputStream(rootedFileName),encoding));
@@ -53,12 +53,24 @@ public class Send {
   }
 
   public static void main(String[] argv) throws Exception {
-    Channel channel =createChannel(Constants.QUEUE_NAME);
     
-    String filename="ead2002.xml";
-    if(argv.length==1){
+    
+    String filename="../xml/ead2002FormatError.xml";  // the file to be sent as message body
+    String rabbitIp=Constants.rabbitServer();  // the ip of the rabbit MQ server
+    if(argv.length>0){
       filename=argv[0];
+      if(argv.length>1) {
+        rabbitIp=argv[1];
+      }
+      
     }
+
+    System.out.println("==== run with params:");
+    System.out.println("==== - argcount: "+argv.length);
+    System.out.println("==== - filename:"+filename);
+    System.out.println("==== - rabbit IP:"+rabbitIp);
+
+    Channel channel =createChannel(rabbitIp, Constants.QUEUE_NAME);
 
     java.util.Map<String,Object> headers= new java.util.HashMap<String,Object>();
     headers.put("routing_key","publish");
