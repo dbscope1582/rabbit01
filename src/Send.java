@@ -70,7 +70,7 @@ public class Send {
     
     BasicProperties properties= new BasicProperties.Builder()
     .headers(headers)
-    .appId("application/xml")
+    .contentType("application/xml")
     .contentEncoding(endcoding)
     .build();
     
