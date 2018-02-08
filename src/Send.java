@@ -40,6 +40,7 @@ public class Send {
   public static byte[] getMessageAsBytes(String fileName, String encoding) throws Exception {
     return getXML(fileName, encoding).getBytes(encoding);
   }
+  
   public static void main(String[] argv) throws Exception {
     String endcoding=Constants.Encoding;
     // the file to be sent as message body
